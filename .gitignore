@@ -1,0 +1,71 @@
+# Compiled Object files
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.pdb
+
+# Build directories
+/build/
+bin/
+obj/
+Debug/
+Release/
+*/Debug/
+*/Release/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# CodeBlocks
+*.layout
+*.depend
+*.cbp
+*.workspace
+
+# Visual Studio
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ncb
+
+# Eclipse
+*.project
+*.cproject
+*.settings/
+
+# Qt Creator
+*.pro.user
+*.qmake.stash
+*.qmake.cache
+*.moc
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Generated files
+*.generated.h
+*.generated.cpp
