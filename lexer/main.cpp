@@ -4,7 +4,7 @@
 
 
 // FALTA ADICIONAR O FINAL DE SENTENÇA
-// FALTA MODIFICIAR A MANEIRA COMO ELE INTERPRETA VALORES DESONHECIDOS
+// FALTA ADIONAR A LINHA NOS TOKES DESCONHECIDOS
 
 int main(int argc, char *argv[]) {
 
@@ -37,7 +37,10 @@ int main(int argc, char *argv[]) {
             case TOKEN_NUMBER: tokenType = "NUMBER"; break;
             case TOKEN_LPAREN: tokenType = "TOKEN_LPAREN"; break;
             case TOKEN_RPAREN: tokenType = "TOKEN_RPAREN"; break;
-            default: tokenType = "UNKNOWN"; break;
+            case TOKEN_TRUE: tokenType = "TOKEN_TRUE"; break;
+            case TOKEN_FALSE: tokenType = "TOKEN_FALSE"; break;
+            case TOKEN_UNKNOWN: tokenType = "TOKEN_UNKNOWN"; break;
+            default: tokenType = "desconhecido"; break;
         }
         std::cout << "Token: " << token.value << " (Tipo: " << tokenType << ")" << std::endl;
     }

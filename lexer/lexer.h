@@ -17,7 +17,9 @@ enum TokenType {
     TOKEN_LTE,    // <=
     TOKEN_LPAREN, // (
     TOKEN_RPAREN, // )
-    TOKEN_UNKNOWN
+    TOKEN_TRUE,   // true
+    TOKEN_FALSE,  // false
+    TOKEN_UNKNOWN, // Desconhecido
 };
 
 // Estrutura para representar um Token
