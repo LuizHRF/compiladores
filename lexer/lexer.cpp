@@ -56,8 +56,9 @@ std::vector<Token> DFA::analyze(const std::string& input) {
             position += token.value.size();
 
         } else {
-            
-            std::cerr << "Erro léxico na posição " << position << ":" << input[position] << " não reconhecido." << std::endl;
+            if (input[position] != ' '){
+                std::cerr << "Erro lexico na posicaoo " << position << ":" << input[position] << " nao reconhecido." << std::endl;
+            }
             position++;
         }
     }
@@ -78,7 +79,7 @@ Token DFA::getToken(const std::string& input, size_t start) {
             value += currentChar;
             position++;
         } else {
-            std::cerr << "Char atual: " << currentChar << std::endl;
+            //std::cerr << "Char atual: " << currentChar << std::endl;
             break;
         }
     }
@@ -86,7 +87,7 @@ Token DFA::getToken(const std::string& input, size_t start) {
     if (finalStates.find(currentState) != finalStates.end()) {  //Se o estado atual for um estado final
         return {finalStates[currentState], value};
     } else {
-        std::cerr << "Estado atual: " << currentState << std::endl;
+        //std::cerr << "Estado atual: " << currentState << std::endl;
         return {TOKEN_UNKNOWN, value};
     }
 }

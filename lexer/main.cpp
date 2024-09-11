@@ -2,6 +2,10 @@
 #include "lexer.h"
 #include <iostream>
 
+
+// FALTA ADICIONAR O FINAL DE SENTENÇA
+// FALTA MODIFICIAR A MANEIRA COMO ELE INTERPRETA VALORES DESONHECIDOS
+
 int main(int argc, char *argv[]) {
 
     if (argc < 2) {
@@ -24,15 +28,15 @@ int main(int argc, char *argv[]) {
     for (const auto& token : tokens) {
         std::string tokenType;
         switch (token.type) {
-            case TOKEN_EQ: tokenType = "=="; break;
-            case TOKEN_NEQ: tokenType = "!="; break;
-            case TOKEN_LT: tokenType = "<"; break;
-            case TOKEN_GT: tokenType = ">"; break;
-            case TOKEN_LTE: tokenType = "<="; break;
-            case TOKEN_GTE: tokenType = ">="; break;
+            case TOKEN_EQ: tokenType = "TOKEN_EQ"; break;
+            case TOKEN_NEQ: tokenType = "TOKEN_NEQ"; break;
+            case TOKEN_LT: tokenType = "TOKEN_LT"; break;
+            case TOKEN_GT: tokenType = "TOKEN_GT"; break;
+            case TOKEN_LTE: tokenType = "TOKEN_LTE"; break;
+            case TOKEN_GTE: tokenType = "TOKEN_GTE"; break;
             case TOKEN_NUMBER: tokenType = "NUMBER"; break;
-            case TOKEN_LPAREN: tokenType = "("; break;
-            case TOKEN_RPAREN: tokenType = ")"; break;
+            case TOKEN_LPAREN: tokenType = "TOKEN_LPAREN"; break;
+            case TOKEN_RPAREN: tokenType = "TOKEN_RPAREN"; break;
             default: tokenType = "UNKNOWN"; break;
         }
         std::cout << "Token: " << token.value << " (Tipo: " << tokenType << ")" << std::endl;
