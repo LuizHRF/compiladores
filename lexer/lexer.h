@@ -20,12 +20,14 @@ enum TokenType {
     TOKEN_TRUE,   // true
     TOKEN_FALSE,  // false
     TOKEN_UNKNOWN, // Desconhecido
+    END_OF_SENTENCE // Final de sentença
 };
 
 // Estrutura para representar um Token
 struct Token {
     TokenType type;
     std::string value;
+    int line;
 };
 
 // Classe para representar o AFD (Autômato Finito Determinístico)
@@ -45,5 +47,6 @@ private:
     // Função para obter o próximo token a partir da posição atual
     Token getToken(const std::string& input, size_t start);
 };
+
 
 #endif // LEXER_H

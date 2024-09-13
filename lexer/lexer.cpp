@@ -2,14 +2,12 @@
 #include "lexer.h"
 #include <iostream>
 
-// Construtor da classe DFA
 DFA::DFA() {
     buildDFA();
 }
 
-// Função que constrói o AFD
 void DFA::buildDFA() {
-    // Estados do AFD
+
     transitions[0]['='] = 2;
     transitions[0]['!'] = 3;
     transitions[0]['>'] = 4;
@@ -65,38 +63,54 @@ void DFA::buildDFA() {
     finalStates[1] = TOKEN_NUMBER;
 }
 
-// Função que processa a string de entrada e retorna os tokens
 std::vector<Token> DFA::analyze(const std::string& input) {
     std::vector<Token> tokens;
     size_t position = 0;
+    int current_line = 1;
 
     while (position < input.size()) {
 
         // Ignorar espaços em branco (se existirem) antes de buscar o próximo token
         while (position < input.size() && isspace(input[position])) {
+            
+            if( input[position] == '\n' ){
+                current_line++;
+            }
+            
             ++position;
         }
     
         Token token = getToken(input, position);
+        token.line = current_line;
         
+        if( token.type == TOKEN_UNKNOWN ){
+            std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position  << ", na linha " << token.line << std::endl;
+        }
+
         if (!token.value.empty()) {
 
             tokens.push_back(token);
             
         } else {
-            // Reportar token inválido
             std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position << std::endl;
         }
 
         // Avançar a posição pela quantidade de caracteres do token processado
         position += token.value.size();
 
+        if (position == input.size()){ //Se for o útlimo token retorna final de sentença
+            Token end_token;
+            end_token.type = END_OF_SENTENCE;
+            end_token.value = "$";
+            end_token.line = current_line;
+            tokens.push_back(end_token);
+        }
+
     }
 
     return tokens;
 }
 
-// Função para obter o próximo token a partir da posição atual
 Token DFA::getToken(const std::string& input, size_t start) {
     int currentState = 0;       // Estado inicial
     std::string value;          // Valor do token
@@ -104,17 +118,17 @@ Token DFA::getToken(const std::string& input, size_t start) {
     size_t lastValidPos = start; // Posição do último estado válido
     int lastValidState = -1;     // Último estado válido
 
-    // Processar cada caractere da string de entrada
+
     while (position < input.size()) {
         char currentChar = input[position];
 
-        // Verificar se o caractere atual é um espaço em branco
         if (isspace(currentChar)) {
-            // Se já acumulamos algum valor no token, encerramos e retornamos o token
+
+            // Se já acumulamos algum valor no token, encerra e retorna
             if (!value.empty()) {
                 break;
             }
-            // Caso contrário, apenas ignore o espaço e continue
+
             ++position;
             continue;
         }
@@ -130,7 +144,8 @@ Token DFA::getToken(const std::string& input, size_t start) {
                 lastValidState = currentState;
                 lastValidPos = position;
             }
-        } else {
+
+        } else { //Se não, joga para o estado de erro
             currentState = 21;
             value += currentChar;
             position++;
@@ -139,10 +154,12 @@ Token DFA::getToken(const std::string& input, size_t start) {
 
     // Verificar se encontramos um estado final válido
     if (lastValidState != -1) {
-        // Retornar o token válido
+
         return {finalStates[lastValidState], input.substr(start, lastValidPos - start)};
+
     } else {
-        // Se nenhum estado final foi encontrado, retornar o token inválido completo
+
         return {TOKEN_UNKNOWN, input.substr(start, position - start)};
+
     }
 }
