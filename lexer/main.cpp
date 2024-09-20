@@ -1,16 +1,29 @@
 // main.cpp
 #include "lexer.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
+//CORRIGIR STRING SENDO IDENTIFICADA PELA METADE
 
 int main(int argc, char *argv[]) {
 
-    if (argc < 2) {
-        std::cerr << "Uso: " << argv[0] << " <entrada>" << std::endl;
+    // if (argc < 2) {
+    //     std::cerr << "Uso: " << argv[0] << " <entrada>" << std::endl;
+    //     return 1;
+    // }
+
+    // std::string input = argv[1];
+
+    std::ifstream inputFile("input.txt");
+    if (!inputFile) {
+        std::cerr << "Erro ao abrir o arquivo de entrada." << std::endl;
         return 1;
     }
 
-    // Obter a string de entrada do primeiro argumento
-    std::string input = argv[1];
+    std::stringstream buffer;
+    buffer << inputFile.rdbuf();
+    std::string input = buffer.str();
 
     DFA lexer;
 
@@ -28,7 +41,7 @@ int main(int argc, char *argv[]) {
             case TOKEN_GT: tokenType = "TOKEN_GT"; break;
             case TOKEN_LTE: tokenType = "TOKEN_LTE"; break;
             case TOKEN_GTE: tokenType = "TOKEN_GTE"; break;
-            case TOKEN_NUMBER: tokenType = "TOKEN_NUMBER"; break;
+            case TOKEN_VAR: tokenType = "TOKEN_VAR"; break;
             case TOKEN_LPAREN: tokenType = "TOKEN_LPAREN"; break;
             case TOKEN_RPAREN: tokenType = "TOKEN_RPAREN"; break;
             case TOKEN_TRUE: tokenType = "TOKEN_TRUE"; break;

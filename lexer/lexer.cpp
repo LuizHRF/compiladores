@@ -55,12 +55,22 @@ void DFA::buildDFA() {
 
     // Transições para números
     for (char c = '0'; c <= '9'; ++c) {
-        transitions[0][c] = 1;
         transitions[1][c] = 1;
     }
 
+    for (char c = 'a'; c <= 'z'; ++c) {
+        transitions[1][c] = 1;
+    }
+
+    for (char c = 'A'; c <= 'Z'; ++c) {
+        transitions[1][c] = 1;
+    }
+
+    transitions[0]['_'] = 1;
+    transitions[1]['_'] = 1;
+
     // Finalizações para números
-    finalStates[1] = TOKEN_NUMBER;
+    finalStates[1] = TOKEN_VAR;
 }
 
 std::vector<Token> DFA::analyze(const std::string& input) {

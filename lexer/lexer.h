@@ -6,9 +6,8 @@
 #include <vector>
 #include <string>
 
-// Definindo os tipos de tokens
 enum TokenType {
-    TOKEN_NUMBER, // número
+    TOKEN_VAR, // variável  "_[a-z][A-Z][0-9]"
     TOKEN_EQ,     // ==
     TOKEN_NEQ,    // !=
     TOKEN_GT,     // >
@@ -30,7 +29,6 @@ struct Token {
     int line;
 };
 
-// Classe para representar o AFD (Autômato Finito Determinístico)
 class DFA {
 public:
     DFA(); // Construtor
@@ -42,9 +40,8 @@ private:
     std::unordered_map<int, std::unordered_map<char, int>> transitions;
     std::unordered_map<int, TokenType> finalStates;
 
-    void buildDFA(); // Função para construir o AFD
+    void buildDFA();
 
-    // Função para obter o próximo token a partir da posição atual
     Token getToken(const std::string& input, size_t start);
 };
 
