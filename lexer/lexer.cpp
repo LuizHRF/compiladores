@@ -73,40 +73,68 @@ void DFA::buildDFA() {
     finalStates[1] = TOKEN_VAR;
 }
 
+std::vector<Token> processBuffer(std::vector<Token> &buffer) {
+
+    std::vector<Token> tokens;
+
+    int hasInvalidToken = 0;
+    for (const auto &tok : buffer) {
+        if (tok.type == TOKEN_UNKNOWN) {
+            hasInvalidToken = 1;
+            break;
+        }
+    }
+
+    if (hasInvalidToken) {
+        std::string combinedValue;
+        for (const auto &tok : buffer) combinedValue += tok.value;
+        tokens.push_back({TOKEN_UNKNOWN, combinedValue});
+    } else {
+        for (const auto &tok : buffer) tokens.push_back(tok);
+    }
+
+    return tokens;
+}
+
 std::vector<Token> DFA::analyze(const std::string& input) {
     std::vector<Token> tokens;
+    std::vector<Token> buffer;
     size_t position = 0;
     int current_line = 1;
 
     while (position < input.size()) {
 
-        // Ignorar espaços em branco (se existirem) antes de buscar o próximo token
-        while (position < input.size() && isspace(input[position])) {
-            
-            if( input[position] == '\n' ){
-                current_line++;
-            }
-            
-            ++position;
+        if( input[position] == '\n' ){
+            current_line++;
+            position++;
         }
-    
-        Token token = getToken(input, position);
-        token.line = current_line;
         
-        if( token.type == TOKEN_UNKNOWN ){
-            std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position  << ", na linha " << token.line << std::endl;
-        }
-
-        if (!token.value.empty()) {
-
-            tokens.push_back(token);
+        while (position < input.size() && !isspace(input[position])) {
             
-        } else {
-            std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position << std::endl;
+            Token token = getToken(input, position);
+            buffer.push_back(token);
+            position += token.value.size();
         }
+        position++;
+    
+        buffer = processBuffer(buffer);
 
-        // Avançar a posição pela quantidade de caracteres do token processado
-        position += token.value.size();
+        for( const auto &token : buffer ){
+            
+            if( token.type == TOKEN_UNKNOWN ){
+                std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position  << ", na linha " << token.line << std::endl;
+                
+            }
+
+            if (!token.value.empty()) {
+
+                tokens.push_back(token);
+                
+            } else {
+                std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position << std::endl;
+            }
+        }
+        buffer.clear();
 
         if (position == input.size()){ //Se for o útlimo token retorna final de sentença
             Token end_token;

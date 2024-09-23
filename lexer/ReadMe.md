@@ -31,22 +31,23 @@ Copy code
 O programa irá processar uma string de entrada predefinida e imprimir os tokens reconhecidos, incluindo números e operadores de comparação, além de parênteses.
 
 ## Exemplo de Saída
-A execução do programa com a string de entrada (123 >= 456) != (789 < 10) produzirá uma saída similar a:
+A execução do programa com a string de entrada (_var1 >= _var2) != (_var3 < _var4) produzirá uma saída similar a:
 
 ```yaml
 Copy code
 Token: ( (Tipo: ( )
-Token: 123 (Tipo: NUMBER)
+Token: _Var1 (Tipo: VAR)
 Token: >= (Tipo: >=)
-Token: 456 (Tipo: NUMBER)
+Token: _var2 (Tipo: VAR)
 Token: ) (Tipo: ) )
 Token: != (Tipo: !=)
 Token: ( (Tipo: ( )
-Token: 789 (Tipo: NUMBER)
+Token: _var3 (Tipo: VAR)
 Token: < (Tipo: <)
-Token: 10 (Tipo: NUMBER)
+Token: _var4 (Tipo: VAR)
 Token: ) (Tipo: ) )
 ```
+
 ## Funcionamento
 Definição dos Tokens: O analisador léxico é configurado para reconhecer tokens de comparação, números e parênteses. Cada tipo de token é associado a um estado final no AFD.
 
@@ -55,7 +56,3 @@ Construção do AFD: O AFD é construído para reconhecer padrões específicos 
 Análise da Entrada: O método analyze() processa a string de entrada caractere por caractere, usando o AFD para identificar tokens. Os tokens são então armazenados e exibidos.
 
 Impressão dos Tokens: Os tokens reconhecidos são impressos com suas respectivas representações e tipos.
-
-Notas
-O projeto é uma implementação básica de um analisador léxico e não inclui verificação de balanceamento de parênteses. Para validar parênteses aninhados, um mecanismo adicional de verificação seria necessário.
-A string de entrada é atualmente predefinida no código. Para análises diferentes, modifique a string no arquivo main.cpp.

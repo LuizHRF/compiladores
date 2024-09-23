@@ -1,1 +1,5 @@
 teste true (_var != _var2) false _%%a
+((TRUE_True>=_var2))<= =
+%%_teste _teste _idk _va$aa;
+
+>=_teste (_teste)
