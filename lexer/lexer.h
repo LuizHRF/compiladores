@@ -27,6 +27,7 @@ struct Token {
     TokenType type;
     std::string value;
     int line;
+    int position;
 };
 
 class DFA {

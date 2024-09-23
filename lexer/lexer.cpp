@@ -28,6 +28,7 @@ void DFA::buildDFA() {
     transitions[12]['R'] = 13;
     transitions[13]['U'] = 14;
     transitions[14]['E'] = 15;
+    transitions[15]['_'] = 21;
 
     transitions[0]['f'] = 16;
     transitions[16]['a'] = 17;
@@ -39,6 +40,7 @@ void DFA::buildDFA() {
     transitions[17]['L'] = 18;
     transitions[18]['S'] = 19;
     transitions[19]['E'] = 20;
+    transitions[20]['_'] = 21;
 
     // Finalizações para tokens de comparação
     finalStates[21] = TOKEN_UNKNOWN;  // Nada identificado
@@ -76,11 +78,16 @@ void DFA::buildDFA() {
 std::vector<Token> processBuffer(std::vector<Token> &buffer) {
 
     std::vector<Token> tokens;
-
+    int line;
+    int position;
     int hasInvalidToken = 0;
+
     for (const auto &tok : buffer) {
         if (tok.type == TOKEN_UNKNOWN) {
             hasInvalidToken = 1;
+            std::cerr << "Erro lexico: token invalido '" << tok.value << "' na posicao " << tok.position  << ", na linha " << tok.line << std::endl;
+            line = tok.line;
+            position = tok.position;
             break;
         }
     }
@@ -88,7 +95,7 @@ std::vector<Token> processBuffer(std::vector<Token> &buffer) {
     if (hasInvalidToken) {
         std::string combinedValue;
         for (const auto &tok : buffer) combinedValue += tok.value;
-        tokens.push_back({TOKEN_UNKNOWN, combinedValue});
+        tokens.push_back({TOKEN_UNKNOWN, combinedValue, line, position});
     } else {
         for (const auto &tok : buffer) tokens.push_back(tok);
     }
@@ -103,28 +110,24 @@ std::vector<Token> DFA::analyze(const std::string& input) {
     int current_line = 1;
 
     while (position < input.size()) {
-
-        if( input[position] == '\n' ){
-            current_line++;
-            position++;
-        }
         
         while (position < input.size() && !isspace(input[position])) {
             
             Token token = getToken(input, position);
+            token.line = current_line;
+            token.position = position;
             buffer.push_back(token);
             position += token.value.size();
+        }
+
+        if( input[position] == '\n' ){
+            current_line++;
         }
         position++;
     
         buffer = processBuffer(buffer);
 
         for( const auto &token : buffer ){
-            
-            if( token.type == TOKEN_UNKNOWN ){
-                std::cerr << "Erro lexico: token invalido '" << token.value << "' na posicao " << position  << ", na linha " << token.line << std::endl;
-                
-            }
 
             if (!token.value.empty()) {
 
@@ -135,6 +138,7 @@ std::vector<Token> DFA::analyze(const std::string& input) {
             }
         }
         buffer.clear();
+        
 
         if (position == input.size()){ //Se for o útlimo token retorna final de sentença
             Token end_token;
@@ -143,6 +147,7 @@ std::vector<Token> DFA::analyze(const std::string& input) {
             end_token.line = current_line;
             tokens.push_back(end_token);
         }
+
 
     }
 
