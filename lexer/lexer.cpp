@@ -14,11 +14,13 @@ void DFA::buildDFA() {
     transitions[0]['<'] = 5;
     transitions[0]['('] = 10;
     transitions[0][')'] = 11;
+    transitions[0][':'] = 30;
 
     transitions[2]['='] = 6;
     transitions[3]['='] = 7;
     transitions[4]['='] = 8;
     transitions[5]['='] = 9;
+    transitions[30]['='] = 31;
 
     transitions[0]['t'] = 12;
     transitions[12]['r'] = 13;
@@ -42,6 +44,25 @@ void DFA::buildDFA() {
     transitions[19]['E'] = 20;
     transitions[20]['_'] = 21;
 
+    transitions[0]['i'] = 22;
+    transitions[22]['f'] = 23;
+    transitions[0]['I'] = 22;
+    transitions[22]['F'] = 23;
+
+    transitions[0]['e'] = 24;
+    transitions[24]['l'] = 25;
+    transitions[25]['s'] = 26;
+    transitions[26]['e'] = 27;
+    transitions[0]['E'] = 24;
+    transitions[24]['L'] = 25;
+    transitions[25]['S'] = 26;
+    transitions[26]['E'] = 27;
+
+    transitions[0]['d'] = 28;
+    transitions[28]['o'] = 29;
+    transitions[0]['D'] = 28;
+    transitions[28]['O'] = 29;
+
     // Finalizações para tokens de comparação
     finalStates[21] = TOKEN_UNKNOWN;  // Nada identificado
     finalStates[4] = TOKEN_GT;  // >
@@ -54,6 +75,10 @@ void DFA::buildDFA() {
     finalStates[11] = TOKEN_RPAREN; // )
     finalStates[15] = TOKEN_TRUE; // true
     finalStates[20] = TOKEN_FALSE; // false
+    finalStates[23] = TOKEN_IF;    // if
+    finalStates[27] = TOKEN_ELSE;  // else
+    finalStates[29] = TOKEN_DO;    // do
+    finalStates[31] = TOKEN_ATRIB;  // :=
 
     // Transições para números
     for (char c = '0'; c <= '9'; ++c) {

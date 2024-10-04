@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "../enum.h"
 
 //CORRIGIR STRING SENDO IDENTIFICADA PELA METADE
 
@@ -35,6 +36,7 @@ int main(int argc, char *argv[]) {
     for (const Token t : tokens) {
         std::string tokenType;
         switch (t.type) {
+            case TOKEN_ATRIB: tokenType = "TOKEN_ATRIB"; break;
             case TOKEN_EQ: tokenType = "TOKEN_EQ"; break;
             case TOKEN_NEQ: tokenType = "TOKEN_NEQ"; break;
             case TOKEN_LT: tokenType = "TOKEN_LT"; break;
@@ -46,6 +48,9 @@ int main(int argc, char *argv[]) {
             case TOKEN_RPAREN: tokenType = "TOKEN_RPAREN"; break;
             case TOKEN_TRUE: tokenType = "TOKEN_TRUE"; break;
             case TOKEN_FALSE: tokenType = "TOKEN_FALSE"; break;
+            case TOKEN_IF: tokenType = "TOKEN_IF"; break;
+            case TOKEN_ELSE : tokenType = "TOKEN_ELSE"; break;
+            case TOKEN_DO: tokenType = "TOKEN_DO"; break;
             case TOKEN_UNKNOWN: tokenType = "TOKEN_UNKNOWN"; break;
             case END_OF_SENTENCE: tokenType = "END_OF_SENTENCE"; break;
             default: tokenType = "desconhecido"; break;
