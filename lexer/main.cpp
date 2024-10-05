@@ -4,8 +4,6 @@
 #include <fstream>
 #include <sstream>
 
-//CORRIGIR STRING SENDO IDENTIFICADA PELA METADE
-
 std::string getName(TokenType t) {
 
     switch (t) {
@@ -40,8 +38,9 @@ int main(int argc, char *argv[]) {
     // std::string input = argv[1];
 
     std::ifstream inputFile("input.txt");
-    if (!inputFile) {
-        std::cerr << "Erro ao abrir o arquivo de entrada." << std::endl;
+    std::ofstream outputFile("fita.dat", std::ios::binary);
+    if (!inputFile or !outputFile) {
+        std::cerr << "Erro ao abrir o arquivo de entrada ou saída." << std::endl;
         return 1;
     }
 
@@ -56,8 +55,10 @@ int main(int argc, char *argv[]) {
     for (Token t : tokens) {
         t.tokenName = getName(t.type);
         
-        std::cout << t.tokenName << "\t\t" << "( '" <<t.value << "' \t\t | line: " << t.line << ")" << std::endl;
+        outputFile.write(reinterpret_cast<const char*>(&t), sizeof(Token));
     }
+
+    outputFile.close();
 
     return 0;
 }

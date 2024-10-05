@@ -5,16 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include "../enum.h"
-
-// Estrutura para representar um Token
-struct Token {
-    TokenType type;
-    std::string value;
-    int line;
-    int position;
-    std::string tokenName;
-};
+#include "../base.h"
 
 class DFA {
 public:

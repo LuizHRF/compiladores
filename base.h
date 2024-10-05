@@ -1,5 +1,5 @@
-#ifndef ENUM_H
-#define ENUM_H
+#ifndef BASE_H
+#define BASE_H
 
 enum TokenType {
     TOKEN_VAR, // variável  "_[a-z][A-Z][0-9]"
@@ -22,5 +22,13 @@ enum TokenType {
 
 };
 
+// Estrutura para representar um Token
+struct Token {
+    TokenType type;
+    std::string value;
+    int line;
+    int position;
+    std::string tokenName;
+};
 
 #endif // ENUM_H
