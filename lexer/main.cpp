@@ -3,9 +3,32 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "../enum.h"
 
 //CORRIGIR STRING SENDO IDENTIFICADA PELA METADE
+
+std::string getName(TokenType t) {
+
+    switch (t) {
+            case TOKEN_ATRIB: return  "TOKEN_ATRIB"; break;
+            case TOKEN_EQ: return  "TOKEN_EQ"; break;
+            case TOKEN_NEQ: return  "TOKEN_NEQ"; break;
+            case TOKEN_LT: return  "TOKEN_LT"; break;
+            case TOKEN_GT: return  "TOKEN_GT"; break;
+            case TOKEN_LTE: return  "TOKEN_LTE"; break;
+            case TOKEN_GTE: return  "TOKEN_GTE"; break;
+            case TOKEN_VAR: return  "TOKEN_VAR"; break;
+            case TOKEN_LPAREN: return  "TOKEN_LPAREN"; break;
+            case TOKEN_RPAREN: return  "TOKEN_RPAREN"; break;
+            case TOKEN_TRUE: return  "TOKEN_TRUE"; break;
+            case TOKEN_FALSE: return  "TOKEN_FALSE"; break;
+            case TOKEN_IF: return  "TOKEN_IF"; break;
+            case TOKEN_ELSE : return  "TOKEN_ELSE"; break;
+            case TOKEN_DO: return  "TOKEN_DO"; break;
+            case TOKEN_UNKNOWN: return  "TOKEN_UNKNOWN"; break;
+            case END_OF_SENTENCE: return  "END_OF_SENTENCE"; break;
+            default: return  "desconhecido"; break;
+        }
+}
 
 int main(int argc, char *argv[]) {
 
@@ -28,34 +51,12 @@ int main(int argc, char *argv[]) {
 
     DFA lexer;
 
-    // std::string input = "( 012 == != > < >= <= )";
-
-    // Analisar a string de entrada e obter tokens
     std::vector<Token> tokens = lexer.analyze(input);
 
-    for (const Token t : tokens) {
-        std::string tokenType;
-        switch (t.type) {
-            case TOKEN_ATRIB: tokenType = "TOKEN_ATRIB"; break;
-            case TOKEN_EQ: tokenType = "TOKEN_EQ"; break;
-            case TOKEN_NEQ: tokenType = "TOKEN_NEQ"; break;
-            case TOKEN_LT: tokenType = "TOKEN_LT"; break;
-            case TOKEN_GT: tokenType = "TOKEN_GT"; break;
-            case TOKEN_LTE: tokenType = "TOKEN_LTE"; break;
-            case TOKEN_GTE: tokenType = "TOKEN_GTE"; break;
-            case TOKEN_VAR: tokenType = "TOKEN_VAR"; break;
-            case TOKEN_LPAREN: tokenType = "TOKEN_LPAREN"; break;
-            case TOKEN_RPAREN: tokenType = "TOKEN_RPAREN"; break;
-            case TOKEN_TRUE: tokenType = "TOKEN_TRUE"; break;
-            case TOKEN_FALSE: tokenType = "TOKEN_FALSE"; break;
-            case TOKEN_IF: tokenType = "TOKEN_IF"; break;
-            case TOKEN_ELSE : tokenType = "TOKEN_ELSE"; break;
-            case TOKEN_DO: tokenType = "TOKEN_DO"; break;
-            case TOKEN_UNKNOWN: tokenType = "TOKEN_UNKNOWN"; break;
-            case END_OF_SENTENCE: tokenType = "END_OF_SENTENCE"; break;
-            default: tokenType = "desconhecido"; break;
-        }
-        std::cout << tokenType << "\t\t" << "( '" <<t.value << "' \t\t | line: " << t.line << ")" << std::endl;
+    for (Token t : tokens) {
+        t.tokenName = getName(t.type);
+        
+        std::cout << t.tokenName << "\t\t" << "( '" <<t.value << "' \t\t | line: " << t.line << ")" << std::endl;
     }
 
     return 0;

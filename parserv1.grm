@@ -1,0 +1,28 @@
+"Start Symbol" = <Programa> 
+
+<Programa> ::= <Comando> <Programa>
+         
+<Programa> ::=
+            
+<Comando> ::= <Atribuicao>            
+           | <Condicional>
+           
+<Atribuicao> ::= TOKEN_VAR TOKEN_ATRIB <Expressao>
+              
+<Expressao> ::= <Comparacao>              
+             | TOKEN_TRUE              
+             | TOKEN_FALSE              
+             | TOKEN_VAR
+             
+<Comparacao> ::= <Expressao> TOKEN_EQ <Expressao>               
+              | <Expressao> TOKEN_NEQ <Expressao>               
+              | <Expressao> TOKEN_GT <Expressao>               
+              | <Expressao> TOKEN_LT <Expressao>               
+              | <Expressao> TOKEN_GTE <Expressao>               
+              | <Expressao> TOKEN_LTE <Expressao>
+              
+<Condicional> ::= TOKEN_IF TOKEN_LPAREN <Comparacao> TOKEN_RPAREN TOKEN_DO <Comando> <OpcaoElse>
+               
+<OpcaoElse> ::= TOKEN_ELSE <Comando>              
+
+<OpcaoElse> ::=

@@ -13,6 +13,7 @@ struct Token {
     std::string value;
     int line;
     int position;
+    std::string tokenName;
 };
 
 class DFA {
