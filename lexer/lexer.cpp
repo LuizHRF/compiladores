@@ -88,7 +88,6 @@ void DFA::buildDFA() {
     for (char c = 'a'; c <= 'z'; ++c) {
         transitions[1][c] = 1;
     }
-
     for (char c = 'A'; c <= 'Z'; ++c) {
         transitions[1][c] = 1;
     }

@@ -30,14 +30,8 @@ std::string getName(TokenType t) {
 
 int main(int argc, char *argv[]) {
 
-    // if (argc < 2) {
-    //     std::cerr << "Uso: " << argv[0] << " <entrada>" << std::endl;
-    //     return 1;
-    // }
-
-    // std::string input = argv[1];
-
     std::ifstream inputFile("input.txt");
+
     std::ofstream outputFile("fita.dat", std::ios::binary);
     if (!inputFile or !outputFile) {
         std::cerr << "Erro ao abrir o arquivo de entrada ou saída." << std::endl;
@@ -52,10 +46,28 @@ int main(int argc, char *argv[]) {
 
     std::vector<Token> tokens = lexer.analyze(input);
 
-    for (Token t : tokens) {
+    std::cout << "Length: " << tokens.size() << std::endl;
+    int legnth = tokens.size();
+    outputFile.write((char*) &legnth, sizeof(int));
+    
+
+    for (Token& t : tokens) {
         t.tokenName = getName(t.type);
-        
-        outputFile.write(reinterpret_cast<const char*>(&t), sizeof(Token));
+
+        std::cout << "Token: " << t.tokenName << " Valor: " << t.value << std::endl;
+
+        outputFile.write(reinterpret_cast<const char*>(&t.type), sizeof(TokenType));
+
+        outputFile.write(reinterpret_cast<const char*>(&t.position), sizeof(int));
+        outputFile.write(reinterpret_cast<const char*>(&t.line), sizeof(int));
+
+        int valueLength = static_cast<int>(t.value.size());
+        outputFile.write(reinterpret_cast<const char*>(&valueLength), sizeof(int));
+        outputFile.write(t.value.data(), valueLength); 
+
+        int tokenNameLength = static_cast<int>(t.tokenName.size());
+        outputFile.write(reinterpret_cast<const char*>(&tokenNameLength), sizeof(int));
+        outputFile.write(t.tokenName.data(), tokenNameLength); 
     }
 
     outputFile.close();
