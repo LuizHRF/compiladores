@@ -15,7 +15,7 @@ O projeto é dividido em três arquivos principais:
 Para compilar o projeto, utilize o seguinte comando:
 
 ```bash
-g++ -o lexer main.cpp lexer.cpp
+g++ -o lexer main.cpp lexer.cpp ../base.cpp
 ```
 
 Isso criará um executável chamado lexer.

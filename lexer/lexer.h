@@ -15,6 +15,7 @@ public:
     std::vector<Token> analyze(const std::string& input);
 
 private:
+
     std::unordered_map<int, std::unordered_map<char, int>> transitions;
     std::unordered_map<int, TokenType> finalStates;
 

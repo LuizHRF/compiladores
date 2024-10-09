@@ -1,8 +1,13 @@
 #ifndef BASE_H
 #define BASE_H
 
+#include <vector>
+#include <string>
+
+// Enumeração para representar os tipos de Token
 enum TokenType {
     TOKEN_VAR, // variável  "_[a-z][A-Z][0-9]"
+    TOKEN_NUMBER, // número  "[0-9]+"
     TOKEN_ATRIB,  // :=
     TOKEN_EQ,     // ==
     TOKEN_NEQ,    // !=
@@ -31,4 +36,11 @@ struct Token {
     std::string tokenName;
 };
 
-#endif // ENUM_H
+
+// Função para ler a fita de tokens
+std::vector<Token> lerFita(const char* filename);
+
+// Função para escrever a fita de tokens
+int escreverFita(std::vector<Token> tokens, const char* filename);
+
+#endif

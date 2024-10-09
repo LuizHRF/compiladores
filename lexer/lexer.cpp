@@ -79,8 +79,14 @@ void DFA::buildDFA() {
     finalStates[27] = TOKEN_ELSE;  // else
     finalStates[29] = TOKEN_DO;    // do
     finalStates[31] = TOKEN_ATRIB;  // :=
+    finalStates[32] = TOKEN_NUMBER;  // Número
 
     // Transições para números
+    for (char c = '0'; c <= '9'; ++c) {
+        transitions[0][c] = 32;
+        transitions[32][c] = 32;
+    }
+
     for (char c = '0'; c <= '9'; ++c) {
         transitions[1][c] = 1;
     }
@@ -162,18 +168,14 @@ std::vector<Token> DFA::analyze(const std::string& input) {
             }
         }
         buffer.clear();
-        
-
-        if (position == input.size()){ //Se for o útlimo token retorna final de sentença
-            Token end_token;
-            end_token.type = END_OF_SENTENCE;
-            end_token.value = "$";
-            end_token.line = current_line;
-            tokens.push_back(end_token);
-        }
-
 
     }
+
+    Token end_token;
+    end_token.type = END_OF_SENTENCE;
+    end_token.value = "$";
+    end_token.line = current_line;
+    tokens.push_back(end_token);
 
     return tokens;
 }

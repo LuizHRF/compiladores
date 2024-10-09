@@ -1,6 +1,0 @@
-_x := TRUE
-
-if _x == (TRUE) do
-    _n := false
-else do
-    _n := TRUE
