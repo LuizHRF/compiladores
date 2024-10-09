@@ -1,1 +1,4 @@
-if 00 do else _var := 13
+_var1 := False
+If _var != (10 >= 9)
+    do
+    _var2 := 9

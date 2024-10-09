@@ -8,6 +8,11 @@
 #include <map>
 #include "../base.h"
 
+OP_SHIFT = 1;
+OP_REDUCE = 2;
+OP_JUMP = 3;
+OP_ACCEPT = 4;
+
 enum ActionType {
     AC_EMPILHA,
     AC_REDUZ,

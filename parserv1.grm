@@ -1,28 +1,22 @@
-"Start Symbol" = <Programa> 
+"Start Symbol" = <Program> 
 
-<Programa> ::= <Comando> <Programa>
-         
-<Programa> ::=
-            
-<Comando> ::= <Atribuicao>            
-           | <Condicional>
+<Program> ::= <StmtList>
            
-<Atribuicao> ::= TOKEN_VAR TOKEN_ATRIB <Expressao>
-              
-<Expressao> ::= <Comparacao>              
-             | TOKEN_TRUE              
-             | TOKEN_FALSE              
-             | TOKEN_VAR
-             
-<Comparacao> ::= <Expressao> TOKEN_EQ <Expressao>               
-              | <Expressao> TOKEN_NEQ <Expressao>               
-              | <Expressao> TOKEN_GT <Expressao>               
-              | <Expressao> TOKEN_LT <Expressao>               
-              | <Expressao> TOKEN_GTE <Expressao>               
-              | <Expressao> TOKEN_LTE <Expressao>
-              
-<Condicional> ::= TOKEN_IF TOKEN_LPAREN <Comparacao> TOKEN_RPAREN TOKEN_DO <Comando> <OpcaoElse>
-               
-<OpcaoElse> ::= TOKEN_ELSE <Comando>              
-
-<OpcaoElse> ::=
+<StmtList> ::= <Stmt> <StmtList>  
+<StmtList> ::=         
+            
+<Stmt> ::= TOKEN_VAR TOKEN_ATRIB <Exp>        
+        | TOKEN_IF <Exp> TOKEN_DO <Stmt> TOKEN_ELSE <Stmt>        
+        | TOKEN_IF <Exp> TOKEN_DO <Stmt>
+        
+<Exp> ::= <Exp> TOKEN_EQ <Exp>       
+        | <Exp> TOKEN_NEQ <Exp>       
+        | <Exp> TOKEN_GT <Exp>       
+        | <Exp> TOKEN_LT <Exp>       
+        | <Exp> TOKEN_GTE <Exp>       
+        | <Exp> TOKEN_LTE <Exp>       
+        | TOKEN_LPAREN <Exp> TOKEN_RPAREN       
+        | TOKEN_TRUE       
+        | TOKEN_FALSE       
+        | TOKEN_NUMBER       
+        | TOKEN_VAR
