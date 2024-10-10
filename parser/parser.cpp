@@ -139,17 +139,19 @@ int SLR_Table::parse(std::vector<Token> tokens) {
     
     //std::cout << "Parsing" << std::endl;
     std::vector<int> stateStack = {0};
-
+    int meanState;
 
     for (const Token &t : tokens ){
 
-
         int currentState = stateStack.back();
-        int currentToken = getSymbolIndex(getName(t.type));
         
+        int currentToken = getSymbolIndex(getName(t.type));
+        std::cout << "Current token: " << getName(t.type) << std::endl;
+
         Operation op = LALRTable[currentState].operations[currentToken];
-        std::cout << "Current state: " << currentState << " / Current token: " << currentToken << std::endl;
-        std::cout << "Operation: " << op.symbolIndex << " / " << op.action << " / " << op.value << std::endl;
+
+
+        std::cout << "[" << currentState << ", " << currentToken << "] -> " << op.action << " / " << op.value << std::endl;
         
         switch(op.action){
 
@@ -163,7 +165,10 @@ int SLR_Table::parse(std::vector<Token> tokens) {
                     stateStack.pop_back();
                     stateStack.pop_back();
                 }
-                stateStack.push_back(productions[op.value].nonTerminalIndex); //Deveria voltar para o 12
+                meanState = stateStack.back();
+                stateStack.push_back(productions[op.value].nonTerminalIndex); 
+                stateStack.push_back(LALRTable[meanState].operations[productions[op.value].nonTerminalIndex].value); // Salto
+                std::cout << "Remove " << productions[op.value].index << " e [" << meanState << ", " << productions[op.value].nonTerminalIndex << "] -> " << stateStack.back() << std::endl;
                 break;
 
             default:
