@@ -6,29 +6,36 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "../base.h"
+#include "../utils/base.h"
+#include "../utils/tinyxml2.h"
 
-OP_SHIFT = 1;
-OP_REDUCE = 2;
-OP_JUMP = 3;
-OP_ACCEPT = 4;
+const int OP_SHIFT = 1;
+const int OP_REDUCE = 2;
+const int OP_JUMP = 3;
+const int OP_ACCEPT = 4;
 
-enum ActionType {
-    AC_EMPILHA,
-    AC_REDUZ,
-    AC_ACEITA,
-    AC_ERRO,
+struct Symbol{
+    int index;
+    std::string name;
+    int type;
 };
 
-enum nonTerminal {
-    E,
-    T,
-    F,
+struct Production{
+    int index;
+    int nonTerminalIndex;
+    int symbolCount;
 };
 
-struct Action {
-    ActionType type;
-    int value; 
+struct Operation {
+    int symbolIndex;
+    int action;
+    int value;
+};
+
+struct State {
+    int index;
+    int actionCount;
+    std::vector<Operation> operations;
 };
 
 class SLR_Table {
@@ -37,23 +44,27 @@ public:
 
     int parse(std::vector<Token> tokens);
 
+    //"Mostra" a tabela SLR
+    void displayTable();
+
 private:
 
-    std::vector<int> production_lenght = {};
 
-    void initializeParserTable();
+    // Símbolos terminais e não terminais
+    std::vector<Symbol> symbols;
 
-    // [Estado, Terminal] -> Ação
-    std::unordered_map<int, std::unordered_map<TokenType, Action>> actionTable;
+    // Produções da gramática
+    std::vector<Production> productions;
 
-    // [Estado, Não terminal] -> Estado
-    std::unordered_map<int, std::unordered_map<nonTerminal, int>> gotoTable;
+    // Tabela de parsing SLR
+    std::vector<State> LALRTable;
 
-    // Função que processa a string de entrada e retorna os tokens
-    Action getAction(int state, TokenType token);
+    //Lê a gramática de um arquivo .xml gerado pelo Gold Parser (GOLD Parser Builder 5.2.0.)
+    int initializeParserTable(const char* filename);
 
-    int getGoto(int state, nonTerminal nonTerminal);
-
+    //Retorna o index de um token na tabela de símbolos (symbols)
+    int getSymbolIndex(std::string token);
+    
 };
 
 #endif 

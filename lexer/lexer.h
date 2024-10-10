@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include "../base.h"
+#include "../utils/base.h"
 
 class DFA {
 public:

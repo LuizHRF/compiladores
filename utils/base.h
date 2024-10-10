@@ -43,4 +43,7 @@ std::vector<Token> lerFita(const char* filename);
 // Função para escrever a fita de tokens
 int escreverFita(std::vector<Token> tokens, const char* filename);
 
+// Função para obter o nome do token
+std::string getName(TokenType type);
+
 #endif
