@@ -93,7 +93,7 @@ std::string getName(TokenType t) {
             case TOKEN_ELSE : return  "TOKEN_ELSE"; break;
             case TOKEN_DO: return  "TOKEN_DO"; break;
             case TOKEN_UNKNOWN: return  "TOKEN_UNKNOWN"; break;
-            case END_OF_SENTENCE: return  "END_OF_SENTENCE"; break;
+            case END_OF_SENTENCE: return  "EOF"; break;
             case TOKEN_NUMBER: return  "TOKEN_NUMBER"; break;
             default: return  "desconhecido"; break;
         }

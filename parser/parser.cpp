@@ -133,7 +133,13 @@ int SLR_Table::getSymbolIndex(std::string symbolName) {
 //     }
 //     return -1;
 // }
-
+void print_state_stack(std::vector<int> stateStack) {
+    std::cout << "State stack: ";
+    for (int i = 0; i < stateStack.size(); i++) {
+        std::cout << stateStack[i] << " - ";
+    }
+    std::cout << std::endl;
+}
 
 int SLR_Table::parse(std::vector<Token> tokens) {
     
@@ -141,17 +147,19 @@ int SLR_Table::parse(std::vector<Token> tokens) {
     std::vector<int> stateStack = {0};
     int meanState;
 
-    for (const Token &t : tokens ){
+    for (int j = 0; j < tokens.size(); j++) {
+
+        Token t = tokens[j];
 
         int currentState = stateStack.back();
         
         int currentToken = getSymbolIndex(getName(t.type));
-        std::cout << "Current token: " << getName(t.type) << std::endl;
+        //std::cout << "Current token: " << getName(t.type) << std::endl;
 
         Operation op = LALRTable[currentState].operations[currentToken];
 
 
-        std::cout << "[" << currentState << ", " << currentToken << "] -> " << op.action << " / " << op.value << std::endl;
+        //std::cout << "[" << currentState << ", " << currentToken << "] -> " << op.action << " / " << op.value << std::endl;
         
         switch(op.action){
 
@@ -168,8 +176,13 @@ int SLR_Table::parse(std::vector<Token> tokens) {
                 meanState = stateStack.back();
                 stateStack.push_back(productions[op.value].nonTerminalIndex); 
                 stateStack.push_back(LALRTable[meanState].operations[productions[op.value].nonTerminalIndex].value); // Salto
-                std::cout << "Remove " << productions[op.value].index << " e [" << meanState << ", " << productions[op.value].nonTerminalIndex << "] -> " << stateStack.back() << std::endl;
+                j--;
+                //std::cout << "Remove " << productions[op.value].index << " e [" << meanState << ", " << productions[op.value].nonTerminalIndex << "] -> " << stateStack.back() << std::endl;
                 break;
+
+            case OP_ACCEPT:
+                std::cout << "Aceito" << std::endl;
+                return 0;
 
             default:
                 std::cerr << "Erro: Ação não reconhecida" << std::endl;
