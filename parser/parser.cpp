@@ -185,7 +185,8 @@ int SLR_Table::parse(std::vector<Token> tokens) {
                 return 0;
 
             default:
-                std::cerr << "Erro: Ação não reconhecida" << std::endl;
+                std::cerr << "Sentença nao reconhecida" << std::endl;
+                std::cerr << "Erro proximo ao token '" << t.value << "' na linha " << t.line << "/" << t.position << std::endl;
                 return 1;
         }
     }

@@ -22,10 +22,10 @@ int main(int argc, char *argv[]) {
 
     std::vector<Token> tokens = lexer.analyze(input);
 
-    for(Token t : tokens) {
-        std::cout << getName(t.type) << " ";
-    }
-    std::cout << std::endl;
+    // for(Token t : tokens) {
+    //     std::cout << getName(t.type) << " ";
+    // }
+    // std::cout << std::endl;
 
     SLR_Table parser;
     //parser.displayTable();

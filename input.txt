@@ -1,4 +1,6 @@
 _var1 := False
-If _var != (10 >= 9)
+If _var != (else >= 9)
     do
-    _var2 := 9
+        _var2 := 9
+    else
+        _meuBool := True
