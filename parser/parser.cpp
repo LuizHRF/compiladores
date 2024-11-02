@@ -1,7 +1,9 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <any>
 #include "parser.h"
+#include "semActions.h"
 
 SLR_Table::SLR_Table() {
     initializeParserTable("utils/parserv1.xml");
@@ -143,41 +145,79 @@ void print_state_stack(std::vector<int> stateStack) {
 
 int SLR_Table::parse(std::vector<Token> tokens) {
     
+    SemanticActions semanticActions(symbols, productions);
+
+    nonTerminal auxNt; 
+
     //std::cout << "Parsing" << std::endl;
-    std::vector<int> stateStack = {0};
+    std::vector<std::any> stateStack = {0};
     int meanState;
+    std::vector<std::any> reducedElements;
 
     for (int j = 0; j < tokens.size(); j++) {
 
         Token t = tokens[j];
 
-        int currentState = stateStack.back();
+        int currentState = std::any_cast<int>(stateStack.back());
         
         int currentToken = getSymbolIndex(getName(t.type));
         //std::cout << "Current token: " << getName(t.type) << std::endl;
 
         Operation op = LALRTable[currentState].operations[currentToken];
 
+        reducedElements.clear();
 
         //std::cout << "[" << currentState << ", " << currentToken << "] -> " << op.action << " / " << op.value << std::endl;
         
         switch(op.action){
 
             case OP_SHIFT:
-                stateStack.push_back(currentToken);
+                stateStack.push_back(t);
+                //std::cout << "Shift " << getName(t.type) << std::endl;
                 stateStack.push_back(op.value);
+                //std::cout << "State " << op.value << std::endl;
                 break;
             
             case OP_REDUCE:
+
                 for(int i=0; i<productions[op.value].symbolCount; i++) {
+
+                    int reducedProd = std::any_cast<int>(stateStack.back());
+                    //std::cout << "Reduced " << reducedProd << std::endl;
                     stateStack.pop_back();
-                    stateStack.pop_back();
+
+                    try{
+
+                        reducedElements.push_back(std::any_cast<Token>(stateStack.back())); 
+                        //std::cout << "Token: " << getName(std::any_cast<Token>(reducedElements.back()).type) << std::endl;
+
+                        stateStack.pop_back();
+
+                    } catch (const std::bad_any_cast& e) {
+
+                        reducedElements.push_back(std::any_cast<nonTerminal>(stateStack.back())); 
+                        //std::cout << "NonTerminal: " << std::any_cast<nonTerminal>(reducedElements.back()).name << std::endl;
+                        
+                        stateStack.pop_back();
+                    }
                 }
-                meanState = stateStack.back();
-                stateStack.push_back(productions[op.value].nonTerminalIndex); 
-                stateStack.push_back(LALRTable[meanState].operations[productions[op.value].nonTerminalIndex].value); // Salto
+
+                meanState = std::any_cast<int>(stateStack.back());
+                //stateStack.push_back(productions[op.value].nonTerminalIndex);  // Adcionar a estrutura do não terminal aop ives do index 
+                
+                auxNt = semanticActions.executeAction(op.value, reducedElements);
+
+                if (auxNt.type == EX_ERROR) {
+                    std::cerr << "Sentença nao reconhecida" << std::endl;
+                    std::cerr << "Erro proximo ao token '" << tokens[j-1].value << "' na linha " << tokens[j-1].line << "/" << tokens[j-1].position << std::endl;
+                    return 1;
+                }
+                stateStack.push_back(auxNt);
+
+                
+                stateStack.push_back(LALRTable[meanState].operations[productions[op.value].nonTerminalIndex].value);  // Salto
                 j--;
-                //std::cout << "Remove " << productions[op.value].index << " e [" << meanState << ", " << productions[op.value].nonTerminalIndex << "] -> " << stateStack.back() << std::endl;
+                //std::cout << "Remove " << productions[op.value].index << " e [" << meanState << ", " << productions[op.value].nonTerminalIndex << "] -> " << std::any_cast<int>(stateStack.back()) << std::endl;
                 break;
 
             case OP_ACCEPT:
