@@ -18,7 +18,7 @@ O projeto é dividido em três arquivos principais:
 Para compilar o projeto, utilize o seguinte comando:
 
 ```bash
-g++ -o compilador main.cpp parser/parser.cpp lexer/lexer.cpp utils/base.cpp utils/tinyxml2.cpp
+g++ -o compilador main.cpp parser/parser.cpp lexer/lexer.cpp utils/base.cpp utils/tinyxml2.cpp parser/semActions.cpp
 ```
 
 Isso criará um executável chamado compilador.

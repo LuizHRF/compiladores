@@ -196,8 +196,7 @@ int SLR_Table::parse(std::vector<Token> tokens) {
                     } catch (const std::bad_any_cast& e) {
 
                         reducedElements.push_back(std::any_cast<nonTerminal>(stateStack.back())); 
-                        //std::cout << "NonTerminal: " << std::any_cast<nonTerminal>(reducedElements.back()).name << std::endl;
-                        
+
                         stateStack.pop_back();
                     }
                 }
@@ -206,6 +205,8 @@ int SLR_Table::parse(std::vector<Token> tokens) {
                 //stateStack.push_back(productions[op.value].nonTerminalIndex);  // Adcionar a estrutura do não terminal aop ives do index 
                 
                 auxNt = semanticActions.executeAction(op.value, reducedElements);
+
+                //std::cout << "Novo nao terminal: " << auxNt.name << " Tipo: "<< auxNt.type << std::endl;
 
                 if (auxNt.type == EX_ERROR) {
                     std::cerr << "Sentença nao reconhecida" << std::endl;

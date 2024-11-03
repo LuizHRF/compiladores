@@ -26,7 +26,7 @@ nonTerminal SemanticActions::executeAction(int production, std::vector<std::any>
     nt.name = "<" + getSymbolName(productions[production].nonTerminalIndex) + ">";
 
     Token t;
-    std::vector<nonTerminal> reducedNT(reduced.size());
+    std::vector<nonTerminal> reducedNT;
     Variable* auxVar;
 
     switch(production){
@@ -70,7 +70,7 @@ nonTerminal SemanticActions::executeAction(int production, std::vector<std::any>
             return nt;
 
         case 7: // <Exp> ::= <Exp> TOKEN_NEQ <Exp>
-            
+
             reducedNT.push_back(std::any_cast<nonTerminal>(reduced[0]));
             reducedNT.push_back(std::any_cast<nonTerminal>(reduced[2]));
 
@@ -113,10 +113,9 @@ nonTerminal SemanticActions::executeAction(int production, std::vector<std::any>
 
         case 10: // <Exp> ::= <Exp> TOKEN_GTE <Exp>
             
+
             reducedNT.push_back(std::any_cast<nonTerminal>(reduced[0]));
             reducedNT.push_back(std::any_cast<nonTerminal>(reduced[2]));
-
-            std::cout << "Tipo 1: " << reducedNT[0].type << " Tipo 2: " << reducedNT[1].type << std::endl;
 
             if (reducedNT[0].type != reducedNT[1].type){
                 std::cout << "Erro: Operação de comparação com tipos errados" << std::endl;
@@ -176,7 +175,6 @@ nonTerminal SemanticActions::executeAction(int production, std::vector<std::any>
                 return nt;
             }
 
-            std::cout << "First use de " << auxVar->token.value << " é " << auxVar->firstUseType << std::endl;
             nt.type = auxVar->firstUseType;
             return nt;
 
