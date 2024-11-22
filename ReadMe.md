@@ -43,3 +43,12 @@ Análise da Entrada: O método analyze() processa a string de entrada caractere 
 Gramática: O analisador sintático utiliza uma gramática baseada em regras para expressões e comandos condicionais, atribuições e comparações. Ele se baseia nos tokens gerados pelo lexer para construir expressões corretas ou identificar erros sintáticos.
 
 Parser SLR: O analisador sintático utiliza uma tabela de parsing SLR (Simple LR) para gerenciar as produções da gramática e realizar as transições de estados no processo de análise. A tabela SLR indica as ações de shift, reduce, ou erros baseados na entrada do token e no estado atual do parser. A tabela é lida de um arquivo .xml e é traduzida nas estruturas definidas em parser.h.
+
+## Funcionamento [Ações Semânticas]
+
+1. A primeira atribuição de uma variável define o seu tipo. Atribuições posteriores só são aceitas se forem do mesmo tipo definido inicialmente.
+2. Não é possível realizar comparações entres tipos de dados diferentes (Inteiros e Booleanos).
+3. Não é possível realizar ações com uma variável não declarada.
+
+
+Estas três verificações são feitas com base nas ações de redução realizadas durante a análise sintática. Quando os objetos são retirados da pilha através de uma redução, eles são analisados de acordo com seu rótulo e valor para verificar as condições semânticas descritas acima.
